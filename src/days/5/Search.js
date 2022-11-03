@@ -23,162 +23,197 @@ body {
     align-items: center;
 
     position: relative;
-
-    padding: 2em;
   }
+}
+
+@keyframes enter
+{
+	from {
+		opacity: 0;
+    transform: translateY(-10px);
+	}
+	to {
+		opacity: 1;
+    transform: none;
+	}
 }
 `;
 
-const SearchIcon = () => {
-  return (
-    <svg viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M11.4399 10.6277L9.05996 8.2477M10.3458 5.15652C10.3458 7.57386 8.38611 9.53349 5.96877 9.53349C3.55144 9.53349 1.5918 7.57386 1.5918 5.15652C1.5918 2.73918 3.55144 0.779541 5.96877 0.779541C8.38611 0.779541 10.3458 2.73918 10.3458 5.15652Z"
-        stroke="#555555"
-        strokeOpacity="0.66"
-        strokeWidth="1.4"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-};
+const StyledSearch = styled.div`
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(23, 23, 23, 0.7);
+  box-shadow: 0px 0px 62px 11px rgba(0, 0, 0, 0.25);
 
-const StyledSearchContainer = styled.div`
-  width: 400px;
-
-  background: rgba(23, 23, 23, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-
-  border-radius: 4px;
-
-  box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.25);
+  max-width: 400px;
+  width: inherit;
+  margin: 12px;
 `;
 
-const StyledSearch = styled.div`
-  font-family: "Crimson Pro", serif;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-
-  font-weight: 400;
-
+const StyledSearchContainer = styled.div`
   display: flex;
   align-items: center;
+  gap: 14px;
 
-  .icon {
-    width: 20px;
-    margin: 16px 0px 12px 16px;
-  }
+  padding: 6px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px 4px 0 0;
+`;
+
+const StyledSearchIcon = styled.div`
+  width: 18px;
+  height: 18px;
 `;
 
 const StyledSearchInput = styled.input`
+  width: 100%;
+  height: 100%;
   border: none;
   outline: none;
-
-  display: block;
-  width: 100%;
-
+  background: transparent;
+  color: #ffffff;
   font-size: 18px;
-  font-weight: 400;
   font-family: "Crimson Pro", serif;
 
-  color: #e2e2e2;
-
-  background: transparent;
-
-  padding: 14px 16px;
+  padding: 8px 0;
 
   &::placeholder {
+    font-size: 18px;
     color: #717171;
   }
 `;
 
 const StyledResultsContainer = styled.div`
-  padding: 10px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: none;
+  border-radius: 0 0 4px 4px;
 `;
 
 const StyledResult = styled.div`
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 10px;
+  padding: 8px;
   cursor: pointer;
+  width: 100%;
+
+  --delay: 120ms;
+  --start: 0ms;
+
+  animation: enter 0.6s both;
+  animation-delay: calc(var(--stagger) * var(--delay) + var(--start));
 
   &:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.1);
     border-radius: 4px;
   }
 
   .left {
     display: flex;
-    gap: 14px;
-    font-weight: 400;
     align-items: center;
+    gap: 12px;
+    color: rgba(255, 255, 255, 0.8);
+    .timezone {
+      width: 6ch;
+      display: flex;
+      justify-content: center;
 
-    .offset {
-      color: rgba(255, 255, 255, 0.69);
-      background: rgba(162, 255, 130, 0.28);
+      color: rgba(255, 255, 255, 0.7);
 
-      padding: 2px 6px;
-      border-radius: 2px;
-    }
-    .city {
-      color: rgba(255, 255, 255, 0.79);
+      background-color: rgba(60, 86, 51, 1);
+      padding: 3px 6px;
+      border-radius: 3px;
     }
   }
   .right {
-    color: rgba(255, 255, 255, 0.47);
-    font-weight: 400;
+    .time {
+      color: rgba(255, 255, 255, 0.5);
+    }
   }
 `;
 
+const SearchIcon = () => {
+  return (
+    <StyledSearchIcon>
+      <svg fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M15 15.5L11.6166 12.1166M13.4445 7.72226C13.4445 11.1587 10.6587 13.9445 7.22226 13.9445C3.7858 13.9445 1 11.1587 1 7.72226C1 4.2858 3.7858 1.5 7.22226 1.5C10.6587 1.5 13.4445 4.2858 13.4445 7.72226Z"
+          stroke="#555555"
+          strokeOpacity="0.66"
+          strokeWidth="1.4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </StyledSearchIcon>
+  );
+};
+
 const Search = () => {
+  const results = [
+    {
+      city: "London, UK",
+      time: "6:30 PM",
+      timezone: "+0:00",
+    },
+    {
+      city: "Houston, TX, USA",
+      time: "6:00 PM",
+      timezone: "-5:00",
+    },
+    {
+      city: "Hyderabad, India",
+      time: "4:30 PM",
+      timezone: "+5:30",
+    },
+    {
+      city: "New York, NY, USA",
+      time: "7:00 AM",
+      timezone: "-5:00",
+    },
+    {
+      city: "Sydney, Australia",
+      time: "12:00 PM",
+      timezone: "+10:00",
+    },
+  ];
+
   return (
     <>
       <GlobalStyle />
-      <StyledSearchContainer>
-        <StyledSearch>
-          <div className="icon">
-            <SearchIcon />
-          </div>
+      <StyledSearch>
+        <StyledSearchContainer>
+          <SearchIcon></SearchIcon>
           <StyledSearchInput
             placeholder="Search for a city"
             type="text"
             spellCheck="false"
             autoComplete="chrome-off"
-          />
-        </StyledSearch>
+          ></StyledSearchInput>
+        </StyledSearchContainer>
         <StyledResultsContainer>
-          <StyledResult>
-            <div className="left">
-              <div className="offset">+ 5:30</div>
-              <div className="city">Hyderabad, India</div>
-            </div>
-            <div className="right">8:45 PM</div>
-          </StyledResult>
-          <StyledResult>
-            <div className="left">
-              <div className="offset">- 5:00</div>
-              <div className="city">Houston, TX, USA</div>
-            </div>
-            <div className="right">4:58 AM</div>
-          </StyledResult>
-          <StyledResult>
-            <div className="left">
-              <div className="offset">+ 5:30</div>
-              <div className="city">Hannover, Germany</div>
-            </div>
-            <div className="right">10:58 AM</div>
-          </StyledResult>
-          <StyledResult>
-            <div className="left">
-              <div className="offset">+ 5:30</div>
-              <div className="city">Hamburg, Germany</div>
-            </div>
-            <div className="right">10:58 AM</div>
-          </StyledResult>
+          {results.map((result, index) => (
+            <StyledResult
+              key={result.city}
+              style={{
+                "--stagger": index + 1,
+              }}
+            >
+              <div className="left">
+                <div className="timezone">{result.timezone}</div>
+                <div className="city">{result.city}</div>
+              </div>
+              <div className="right">
+                <div className="time">{result.time}</div>
+              </div>
+            </StyledResult>
+          ))}
         </StyledResultsContainer>
-      </StyledSearchContainer>
+      </StyledSearch>
     </>
   );
 };
