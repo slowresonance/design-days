@@ -7,8 +7,7 @@ import Search from "./days/5/Search";
 function App() {
   return (
     <div className="App">
-      {/* <TooltipWrapper></TooltipWrapper> */}
-      <Search />
+      <LinearFeatures />
     </div>
   );
 }
